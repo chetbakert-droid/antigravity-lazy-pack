@@ -13,6 +13,8 @@ description: 一次安裝所有 AntiGravity 懶人包技能。說「全部安裝
 4. **04-draw** — 生圖指引
 5. **05-workflow** — 開工/收工/初始化
 6. **06-obsidian** — 連接 Obsidian (MCPVault)
+7. **07-html-slide-builder** — 教材轉 HTML 互動簡報
+8. **08-video-specs** — 三類影片製作規範與自動工作流
 
 每完成一個報告進度，最終回報總表。
 已安裝的工具自動跳過。

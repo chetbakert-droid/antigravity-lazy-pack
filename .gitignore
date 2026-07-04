@@ -54,3 +54,7 @@ images/generated/
 wordcloud-app/
 scratch/
 tmp/
+
+# Fonts
+*.otf
+*.ttf

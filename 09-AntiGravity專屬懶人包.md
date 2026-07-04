@@ -1,10 +1,10 @@
-﻿# Anti-Gravity 懶人包 #09：服務連接與工作流程設定
+# Anti-Gravity 懶人包 #09：服務連接與工作流程設定
 
-> 版本：v1.4
-> 更新日期：2026-05-31
+> 版本：v1.6
+> 更新日期：2026-07-04
 > 語系偏好：繁體中文（Taiwan）
 
-這份懶人包的目標，是讓 Anti-Gravity 使用者能安全連接 NotebookLM、Firebase、GitHub、Obsidian，並建立「開工 / 收工 / 新專案初始化」工作流程。本版本已重新加回了 Obsidian MCPVault 的一鍵整合設定與專屬 Skill。
+這份懶人包的目標，是讓 Anti-Gravity 使用者能安全連接 NotebookLM、Firebase、GitHub、Obsidian、HTML Slide Builder、Video Specs，並建立「開工 / 收工 / 新專案初始化」工作流程。本版本已新增了 HTML Slide Builder 與 Video Specs 影片製作規範與自動工作流技能。
 
 本文件只放可公開教學的設定流程，不放任何個人 NotebookLM 清單、筆記本 ID、研究報告、生成圖片、帳號 token 或測試專案。
 
@@ -17,6 +17,8 @@
 - [ ] 已安裝 GitHub CLI（`gh`）
 - [ ] 已安裝 Node.js / npm
 - [ ] 已安裝 Python 或 `uv`
+- [ ] 已安裝 Pillow 套件 (`pip install Pillow`)
+- [ ] 已安裝 FFmpeg 並且已加入 PATH 變數
 - [ ] 有 Google 帳號，可登入 NotebookLM / Firebase
 - [ ] 有 GitHub 帳號
 - [ ] 已有 Obsidian vault，或知道筆記本資料夾位置
@@ -28,7 +30,8 @@ git --version
 gh --version
 node --version
 npm.cmd --version
-python --version
+ffmpeg -version
+python -c "import PIL; print(PIL.__version__)"
 ```
 
 ---
@@ -261,7 +264,74 @@ C:\Users\<你>\AppData\Roaming\npm\mcpvault.cmd
 
 ---
 
-## 六、開工 / 收工 / 新專案初始化
+## 六、教材轉 HTML 互動簡報（HTML Slide Builder）
+
+### 必要元件
+
+- [ ] 已安裝 `Pillow`：`python -m pip install Pillow`
+- [ ] 已安裝 `GitHub CLI`：用於一鍵部署到 GitHub Pages
+
+### 安裝
+
+新版的 `html-slide-builder` 已經整合到本懶人包中，你可以使用以下指令安裝：
+
+```powershell
+npx skills add mathruffian-dot/antigravity-lazy-pack --skill 07-html-slide-builder -g -y
+```
+
+或者使用 `00-install-all` 一次安裝。
+
+### 使用方式
+
+在對話中說：
+- 「幫我把這份教材做成 HTML 互動簡報」
+- 「把以下課程大綱轉成 Reveal.js 互動簡報：[教材內容]」
+
+AI 將會：
+1. 輸出大綱草稿供確認。
+2. 自動利用內建生圖或 `draw.py` 生成精美的霓虹發光暗色背景。
+3. 自動生成圖標總表並用 `Pillow` 完成去背與裁剪。
+4. 整合 Firebase 實現即時文字雲與單選投票。
+5. 使用 GitHub CLI 自動建立 repo 並部署到 GitHub Pages。
+
+---
+
+## 七、三類影片製作規範與自動工作流（Video Specs）
+
+### 必要元件
+
+- [ ] 已安裝 `edge-tts` (語音旁白)：`pip install edge-tts`
+- [ ] 已安裝 `ffmpeg` 與 `ffprobe` (音視合成)
+- [ ] 已安裝 `Playwright` 於暫存渲染目錄
+- [ ] 已下載並安裝 `源石黑體` ( GenSekiGothic )
+
+### 安裝與初始化
+
+影片製作規範與自動引導工具已經整合到本懶人包中，你可以使用以下指令安裝：
+
+```powershell
+npx skills add mathruffian-dot/antigravity-lazy-pack --skill 08-video-specs -g -y
+```
+
+或者使用 `00-install-all` 一次安裝。
+
+### 使用方式
+
+在對話中說：
+- 「啟動 claude-video-specs」
+- 「我要做一支教學影片」
+- 「按照三類影片規範做影片」
+
+AI 將會自動啟動 **5 階段工作流**：
+1. **環境檢查**：自動檢查 Python, Edge-TTS, FFmpeg, Playwright 及字型並引導補齊。
+2. **介紹三類影片**：引導選擇 01 活動紀錄、02 教學影片、03 社群科普影片。
+3. **試作**：fork 範本、生成旁白、用 Playwright 錄製 webm 並用 ffmpeg 合成 mp4。
+4. **調整**：微調旁白文案、動畫節奏與視覺風格。
+5. **打包技能**：將本次的製作工作流打包成專屬技能。
+
+---
+
+## 八、開工 / 收工 / 新專案初始化
 
 Anti-Gravity 可使用專案根目錄的 `ANTIGRAVITY.md` 作為 AI 工作規則入口。它應記錄固定規則、路徑、專案邊界與 Do / Don't；進度、踩坑、每日紀錄應放 Obsidian 專案駕駛艙。
 
@@ -358,6 +428,8 @@ Obsidian vault：
 - GitHub：已登入 / 待登入 / 失敗
 - Firebase：已登入 / 待登入 / 未使用
 - Obsidian：已連接 / 待設定 / 失敗
+- 簡報生成器：已安裝 / 未安裝
+- 影片製作規範工作流：已安裝 / 未安裝
 - 規則檔：ANTIGRAVITY.md 已建立 / 已更新 / 未建立
 - Git 狀態：乾淨 / 有未提交變更
 - 下一步：
@@ -377,6 +449,8 @@ Obsidian vault：
 | PowerShell 擋 `npm.ps1` / `npx.ps1` | 改用 `npm.cmd` / `npx.cmd` |
 | Obsidian 找不到 vault | 搜尋含 `.obsidian` 的資料夾，請使用者確認真正使用的 vault |
 | 收工會納入太多檔案 | 先看 `git status` 與 diff，只 stage 本次相關檔案 |
+| Pillow 安裝失敗 | 改用系統管理員權限執行 pip install Pillow，若仍不行可略過，僅圖標去背無法運作 |
+| Playwright 安裝失敗 | 請確認 Node.js 版本，並在工作目錄 `%TEMP%/cvs-render/` 內重新手動執行 npm install |
 
 ---
 
@@ -384,6 +458,8 @@ Obsidian vault：
 
 | 日期 | 版本 | 更新內容 |
 |---|---|---|
+| 2026-07-04 | v1.6 | 整合 Video Specs (08-video-specs) 影片製作規範與自動工作流技能 |
+| 2026-07-04 | v1.5 | 整合 HTML Slide Builder (07-html-slide-builder) 簡報生成技能 |
 | 2026-05-31 | v1.4 | 重新加回 Obsidian MCPVault 設定與開工/收工自動化流程，並加入獨立 Skill 目錄 |
 | 2026-05-24 | v1.2 | 移除 Obsidian MCPVault 安裝與 MCP 註冊，保留 Obsidian 作為人工專案筆記工作流 |
 | 2026-05-23 | v1.1 | 移除 NotebookLM 個人資料與成果檔定位，改正 NotebookLM OAuth、Obsidian MCP、Git 收工安全流程 |
